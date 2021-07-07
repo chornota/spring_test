@@ -11,3 +11,20 @@ public class UserResponse {
         this.status = status;
     }
 }
+
+//ApiResponse
+//boolean success:true/false
+//Object data
+
+//ResponseEntity.ok(new ApiResponse(true,obj)
+
+{
+    "success":true,
+    "data":[]
+}
+class UnableToPerformOperationException extends Exception{
+    
+}
+
+//ExceptionHandlers spring
+//User
