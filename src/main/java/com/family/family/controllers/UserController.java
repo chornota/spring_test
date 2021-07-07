@@ -13,12 +13,28 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+// @Controller використовується в SpringMVC і там за замовчуванням треба повертати назву view (файла, на який перекидати після обробки запиту)
+// якщо ти пишеш Rest - заміни анотацію @Controller на @RestController, так не треба буде над кожним методом писати анотацію @ResponseBody.
+// Додай анотацію @RequestMapping("BaseURL") - де baseURL - базовий урл до всіх запитів твого контролера наприклад: @RequestMapping("/api/users")
+
+
+
+/*
+    Архітектура
+    
+    Додай додатковий слой UserService і UserService вже буде звертатися до UserRepository (не треба напряму з контролера викликати репозиторій, прибери його звідси)
+    
+    Нехай твої методи повертатимуть ResponseEntity, там будеш просто передавати body відповіді
+*/
 
 @Controller
 public class UserController {
 
     @Autowired
     UserRepo userRepo;
+    // не пиши дієслова в мапінгах get запит і так значить, що ти щось отримаєш
+    // я переписав би його просто без мапінга
+    //Анотація контроллер використовується в springMVC 
 
     @GetMapping(value = "/get_all_users", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -28,7 +44,13 @@ public class UserController {
         userListContainer.setList(userList);
         return  userListContainer;
     }
-
+    
+    
+    
+    
+    //Я не бачив, щоб використовували нижнє підкреслювання в  _ в path naming
+    
+    //
     @PostMapping(value = "/new_user", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public UserResponse addNew(@RequestBody User user){
@@ -43,8 +65,9 @@ public class UserController {
         }
         return userRequest;
     }
-
+    
     @DeleteMapping("/delete/{id}")
+    //норм практика це додати поле
     @ResponseBody
     public UserResponse deleteCurrentUser(@PathVariable Long id){
         UserResponse userRequest = new UserResponse();
@@ -77,6 +100,7 @@ public class UserController {
         return userRequest;
     }
 
+    //Фільтрувати треба відразу в бд почитай про анотацію @Query  і hql за І
     @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public UserContainer filterByAge(@RequestParam Integer a, @RequestParam Integer b){
