@@ -12,7 +12,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String firstName, lastName, email;
+    private String firstName;
+    private String lastName;
+    private String email;
     private int age;
 
     public int getAge() {
