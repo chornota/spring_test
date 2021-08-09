@@ -24,7 +24,7 @@ public class UserService {
         User newUser = new User(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getAge());
         userRepo.save(newUser);
     }
-
+    //Деліт з бд - погана практика краще зроби поле active (true/false) і з ним працюй.
     public void delete(Long id){
         userRepo.deleteById(id);
     }
@@ -32,7 +32,8 @@ public class UserService {
     public void update(Long id, UserDTO userDTO){
         userRepo.save(convertToUser(userDTO, id));
     }
-
+   //Створи клас, маппер, з двома методами який буде перетворювати об'єкт типу юзер в дто  і ДТО в юзера, це буде по single responsibility.
+    не використовуй в данному випадку доцільніше використати метод map і зібрати все Collectors.toList()
     public List<UserDTO> convertToDTO(List<User> list){
         List<UserDTO> userDTO = new ArrayList<>();
         list.stream().forEach(x -> {
@@ -41,7 +42,7 @@ public class UserService {
 
         return userDTO;
     }
-
+    //Для чого ти зробив id окремим параметром? простіше засетити null, якщо його немає.
     public User convertToUser(UserDTO userDTO, Long id){
         Optional<User> findUserById =  userRepo.findById(id);
         User user = new User();
